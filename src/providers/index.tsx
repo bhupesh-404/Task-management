@@ -6,7 +6,7 @@ import Offline from "@components/static/Offline"
 
 const AppProviders = ({ children }: TProps) => {
   return (
-    <ConfigProvider>
+    <ConfigProvider theme={{ token: { colorPrimary: "#7B1984" } }}>
       <ErrorBoundary fallback={<Error500 />}>
         <Offline>{children}</Offline>
       </ErrorBoundary>

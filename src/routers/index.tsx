@@ -8,20 +8,20 @@ import NotFound from "@components/static/NotFound"
 
 const Approuter = () => {
   return (
-    <>
-      <Router>
-        <Routes>
-          <Route path="/" element={<RootRedirect />} />
+    <Router>
+      <Routes>
+        <Route path="/" element={<RootRedirect />} />
+        <Route element={<RootRedirect />}>
           <Route path="/login" element={<Login />} />
+        </Route>
 
-          <Route element={<ProtectedRoute />}>
-            <Route path="/tasks" element={<Tasks />} />
-          </Route>
+        <Route element={<ProtectedRoute />}>
+          <Route path="/tasks" element={<Tasks />} />
+        </Route>
 
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </Router>
-    </>
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Router>
   )
 }
 

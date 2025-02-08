@@ -1,10 +1,14 @@
 import { useAuth } from "@hooks/useAuth"
-import { Navigate } from "react-router"
+import { Navigate, Outlet } from "react-router"
 
 const RootRedirect = () => {
   const auth = useAuth()
+  const isLogin = location.pathname == "/login"
+
   return auth ? (
-    <Navigate to="/dashboard" replace />
+    <Navigate to="/tasks" replace />
+  ) : isLogin ? (
+    <Outlet />
   ) : (
     <Navigate to="/login" replace />
   )

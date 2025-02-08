@@ -1,4 +1,5 @@
 export const useAuth = () => {
-  const user = localStorage.getItem("user") // Simulated auth state
-  return user ? JSON.parse(user) : null
+  const user = localStorage.getItem("user")
+  return !!user
+  // return user ? JSON.parse(user) : null
 }
