@@ -1,4 +1,4 @@
-import { Button } from "@components/button"
+import { Button } from "@components"
 import { Result } from "antd"
 import { useNavigate } from "react-router"
 

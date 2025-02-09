@@ -1,1 +1,5 @@
 export { Button } from "./button/index"
+export { Layout } from "./layout/index"
+export { Header } from "./header/index"
+export { Content } from "./content/index"
+export { Collapse } from "./collapse/index"

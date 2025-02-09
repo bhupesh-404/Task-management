@@ -1,10 +1,14 @@
 import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth"
 import { auth, provider } from "@lib/firebaseConfig"
 import { notification } from "antd"
+import { TUser, updateUser, removeUser } from "@store/user"
 
 export const logOut = async () => {
   try {
     await signOut(auth)
+    localStorage.removeItem("user")
+    removeUser()
+    location.reload()
     notification.success({ message: "Logged out successfully" })
   } catch (error) {
     console.error("Logout Error:", error)
@@ -19,8 +23,9 @@ export const signInWithGoogle = async () => {
       if (!result) return null
       const credential = GoogleAuthProvider.credentialFromResult(result)
       const token = credential?.accessToken
-      const user = result.user
-      localStorage.setItem("user", JSON.stringify(result.user))
+      const user = result.user as TUser
+      localStorage.setItem("user", "true")
+      updateUser(user)
       location.reload()
       return { token, user }
     } catch (error: any) {

@@ -4,7 +4,8 @@ import RootRedirect from "./RootRedirect"
 
 import Login from "@pages/login"
 import Tasks from "@pages/tasks"
-import NotFound from "@components/static/NotFound"
+import NotFound from "@component/static/NotFound"
+import RootLayout from "@component/root-layout"
 
 const Approuter = () => {
   return (
@@ -16,7 +17,9 @@ const Approuter = () => {
         </Route>
 
         <Route element={<ProtectedRoute />}>
-          <Route path="/tasks" element={<Tasks />} />
+          <Route element={<RootLayout />}>
+            <Route path="/tasks" element={<Tasks />} />
+          </Route>
         </Route>
 
         <Route path="*" element={<NotFound />} />

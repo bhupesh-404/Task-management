@@ -25,13 +25,15 @@
 
     "baseUrl": "./",
     "paths": {
-      "@components/*": ["src/components/*"],
+      "@components": ["src/components/index"],
+      "@component/*": ["src/components/*"],
       "@utils/*": ["src/utils/*"],
       "@styles/*": ["src/styles/*"],
       "@pages/*": ["src/pages/*"],
       "@hooks/*": ["src/hooks/*"],
       "@assets/*": ["src/assets/*"],
-      "@lib/*": ["src/lib/*"]
+      "@lib/*": ["src/lib/*"],
+      "@store/*": ["src/store/*"]
     }
   },
   "include": ["src"]

@@ -1,9 +1,9 @@
 import Hero from "@assets/svg/login/hero.svg?react"
-import Logo from "@assets/svg/login/logo.svg?react"
+import Logo from "@assets/svg/logo.svg?react"
 import Google from "@assets/svg/login/google.svg?react"
 import herobg from "@assets/images/login/circles_bg.png"
 import { Image } from "antd"
-import { Button } from "@components/button"
+import { Button } from "@components"
 import { useRequest } from "@hooks/useRequest"
 import { signInWithGoogle } from "@utils/index"
 
