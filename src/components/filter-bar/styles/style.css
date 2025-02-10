@@ -1,0 +1,5 @@
+#filter-bar {
+  .ant-select-selector {
+    border-radius: 2rem !important;
+  }
+}

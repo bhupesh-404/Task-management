@@ -33,7 +33,9 @@
       "@hooks/*": ["src/hooks/*"],
       "@assets/*": ["src/assets/*"],
       "@lib/*": ["src/lib/*"],
-      "@store/*": ["src/store/*"]
+      "@store/*": ["src/store/*"],
+      "@api": ["src/api/index"],
+      "@type/*": ["src/types/*"]
     }
   },
   "include": ["src"]

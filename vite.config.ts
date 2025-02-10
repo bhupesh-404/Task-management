@@ -7,7 +7,7 @@ import path from "path"
 export default defineConfig({
   plugins: [react(), tailwindcss(), svgr()],
   optimizeDeps: {
-    exclude: ["firebase", "firebase/auth"]
+    exclude: ["firebase", "firebase/auth", "react-quill"]
   },
   resolve: {
     alias: {
@@ -19,7 +19,9 @@ export default defineConfig({
       "@assets": path.resolve(__dirname, "src/assets"),
       "@styles": path.resolve(__dirname, "src/styles"),
       "@lib": path.resolve(__dirname, "src/lib"),
-      "@store": path.resolve(__dirname, "src/store")
+      "@store": path.resolve(__dirname, "src/store"),
+      "@api": path.resolve(__dirname, "src/api/index.ts"),
+      "@type": path.resolve(__dirname, "src/types")
     }
   }
 })
