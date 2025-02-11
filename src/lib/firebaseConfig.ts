@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app"
 import { getAuth, GoogleAuthProvider } from "firebase/auth"
-// import { getAnalytics } from "firebase/analytics";
+import algoliasearch from "algoliasearch"
+import { collection, getDocs, getFirestore } from "firebase/firestore"
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -12,10 +13,41 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_MESAUREMENT_ID
 }
 
+const client = algoliasearch(
+  import.meta.env.VITE_ALGOILI_APP_ID,
+  import.meta.env.VITE_ALGOLI_APP_KEY
+)
+const algoliaIndex = client.initIndex("tasks")
+algoliaIndex.setSettings({
+  attributesForFaceting: [
+    "taskStatus",
+    "taskCategory",
+    "dueOn",
+    "dueOnTimeStamp"
+  ],
+  searchableAttributes: [
+    "taskName",
+    "dueOn",
+    "taskStatus",
+    "taskCategory",
+    "description"
+  ],
+  numericAttributesForFiltering: ["dueOnTimeStamp.seconds"]
+})
 const app = initializeApp(firebaseConfig)
-// const analytics = getAnalytics(app);
 
 const auth = getAuth(app)
 const provider = new GoogleAuthProvider()
 
-export { auth, provider }
+const syncFirestoreToAlgolia = async () => {
+  const tasksSnapshot = await getDocs(collection(getFirestore(), "tasks"))
+  const tasks = tasksSnapshot.docs.map(doc => ({
+    objectID: doc.id,
+    ...doc.data()
+  }))
+
+  await algoliaIndex.saveObjects(tasks)
+  console.log("Firestore data synced with Algolia!")
+}
+
+export { auth, provider, syncFirestoreToAlgolia, algoliaIndex }

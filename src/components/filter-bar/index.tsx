@@ -1,13 +1,18 @@
-import { Button, Select } from "@components"
+import { Button, Input, Select } from "@components"
 import "./styles/style.css"
 import AddEditModal from "./add-task/AddEditModal"
-import { createContext, ReactNode, useContext } from "react"
-import { TReturn } from "src/api/getTasksByStatus"
+import { SearchOutlined } from "@ant-design/icons"
+import { DatePicker } from "antd"
+import { addFilter } from "@store/filter"
+import { debounce } from "@utils/debounce"
+import { useToggle } from "@hooks/useToggle"
 
-const FilterContext = createContext<TFilter>({ data: null, loading: false })
-export const useFilter = () => useContext(FilterContext)
-
-const FilterBar = ({ children }: { children?: ReactNode }) => {
+const FilterBar = () => {
+  const [open, toggle] = useToggle()
+  const filterBySearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    addFilter(e.target.value, "search")
+  }
+  const onSearch = debounce(filterBySearch, 300)
   return (
     <>
       <div
@@ -19,35 +24,48 @@ const FilterBar = ({ children }: { children?: ReactNode }) => {
           <Select
             size="large"
             placeholder="Category"
-            className="!mx-5"
-            options={[{ value: "sample", label: <span>sample</span> }]}
+            allowClear
+            className="!mx-5 min-w-[8rem]"
+            options={categoryOptions}
+            onChange={value => {
+              addFilter(value, "taskCategory")
+            }}
           />
-          <Select
+          <DatePicker.RangePicker
             size="large"
-            placeholder="Due on"
-            options={[{ value: "sample", label: <span>sample</span> }]}
+            placeholder={["Due on From", "Due on To"]}
+            onChange={async (_, date) => {
+              addFilter(date, "dueOn")
+            }}
           />
         </div>
-        <div>
-          <AddEditModal>
-            <Button size="large" type="primary">
-              Add task
-            </Button>
-          </AddEditModal>
+        <div className="flex items-center gap-3">
+          <Input
+            className="!rounded-3xl"
+            size="large"
+            placeholder="Search"
+            prefix={<SearchOutlined />}
+            onChange={e => onSearch(e)}
+          />
+          <Button size="large" type="primary" onClick={() => toggle(true)}>
+            Add task
+          </Button>
+          <AddEditModal show={open} toggle={toggle} />
         </div>
       </div>
-      {children && (
-        <FilterContext.Provider value={{ data: null, loading: false }}>
-          {children}
-        </FilterContext.Provider>
-      )}
     </>
   )
 }
 
 export default FilterBar
 
-type TFilter = {
-  data: null | TReturn[]
-  loading: boolean
-}
+const categoryOptions = [
+  {
+    label: "Work",
+    value: "WORK"
+  },
+  {
+    label: "Professional",
+    value: "PROFESSIONAL"
+  }
+]

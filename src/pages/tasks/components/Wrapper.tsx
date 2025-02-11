@@ -5,7 +5,7 @@ const Wrapper = ({ className, ...props }: TProps) => {
     <div
       {...props}
       className={classNames(
-        "grid grid-cols-6 gap-0 px-4 place-content-center",
+        "grid grid-cols-7 gap-0 px-4 place-content-center",
         className
       )}
     >

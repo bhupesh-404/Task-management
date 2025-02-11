@@ -1,3 +1,6 @@
 export { addTask } from "./addTask"
 export { getFilteredTasks } from "./getFilteredTasks"
 export { getTasksByStatus } from "./getTasksByStatus"
+export { migrateDueOnFields } from "./migrate"
+export { getTaskById } from "./getTaskById"
+export { updateTaskById } from "./updateTaskById"

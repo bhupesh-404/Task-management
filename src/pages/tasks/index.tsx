@@ -21,6 +21,7 @@ const TaskBuddy = () => {
         <ColSpanOne>Due on</ColSpanOne>
         <ColSpanOne>Task Status</ColSpanOne>
         <ColSpanTwo>Task Category</ColSpanTwo>
+        <ColSpanOne></ColSpanOne>
       </Wrapper>
       <div className="mb-4"></div>
       <Collapse
@@ -59,6 +60,7 @@ const TaskBuddy = () => {
           }
         ]}
         className="!bg-[#CEFFCC]"
+        defaultActiveKey={["1"]}
         expandIconPosition="end"
       />
     </div>

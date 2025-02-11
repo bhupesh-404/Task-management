@@ -1,5 +1,6 @@
 #filter-bar {
-  .ant-select-selector {
+  .ant-select-selector,
+  .ant-picker {
     border-radius: 2rem !important;
   }
 }

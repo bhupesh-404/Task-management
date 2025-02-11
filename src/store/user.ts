@@ -1,4 +1,4 @@
-// import { shallow } from "zustand/shallow"
+import { shallow } from "zustand/shallow"
 import storeCreationWrapper from "./helpers/storeCreationWrapper"
 import { createWithEqualityFn as create } from "zustand/traditional"
 const defaultdata: TUser = {}
@@ -7,8 +7,8 @@ const useUserData = create<TUser>()(
   storeCreationWrapper(() => ({ ...defaultdata }), {
     persistName: "user-info",
     devtools: { name: "user-info", store: "user-store", enabled: true }
-  })
-  // shallow
+  }),
+  shallow
 )
 
 export default useUserData

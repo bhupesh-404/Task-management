@@ -4,6 +4,7 @@ export const Select = (props: SelectProps) => {
   return (
     <AntSelect
       {...props}
+      showSearch
       filterOption={(input, option) =>
         ((option?.label ?? "") as string)
           .toLowerCase()

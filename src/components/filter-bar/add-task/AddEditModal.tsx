@@ -1,34 +1,44 @@
-import { Button, Input, Modal, Select } from "@components"
 import { DatePicker, Form, notification, Radio, Space } from "antd"
-import { useForm } from "antd/es/form/Form"
+import { Timestamp } from "firebase/firestore"
 import TextArea from "antd/es/input/TextArea"
-// import DescriptionInput from "./Description"
-import { ReactNode, useState } from "react"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { addTask } from "@api"
-
-// import TipTapEditor from "./Editor"
-import "./style/index.css"
+import { Button, Input, Modal, Select } from "@components"
+import { addTask, getTaskById, updateTaskById } from "@api"
 import dayjs from "dayjs"
+import { useForm } from "antd/es/form/Form"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import "./style/index.css"
+import { useEffect } from "react"
+import { TTask } from "@type/task.type"
 
-const AddEditModal = ({ children }: { children: ReactNode }) => {
-  const [form] = useForm()
-  const [show, setShow] = useState(false)
+const AddEditModal = ({ taskId, show, toggle }: TProps) => {
+  const [form] = useForm<TTask>()
+
   const queryClient = useQueryClient()
+  const { data, isPending: isFetching } = useQuery({
+    queryFn: () => getTaskById(taskId),
+    queryKey: ["taskById", taskId],
+    enabled: !!taskId
+  })
+
   const { mutateAsync, isPending, isError, error } = useMutation({
-    mutationFn: addTask,
+    mutationFn: async (data: any) => {
+      if (taskId) return updateTaskById(data, taskId)
+
+      return addTask(data)
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"], exact: false })
     }
   })
   const onClose = () => {
     form.resetFields()
-    setShow(false)
+    toggle(false)
   }
   const onSubmit = async (data: any) => {
     await mutateAsync({
       ...data,
-      dueOn: dayjs(data.dueOn).format("YYYY-MM-DD")
+      dueOn: dayjs(data.dueOn).format("YYYY-MM-DD"),
+      dueOnTimeStamp: Timestamp.fromDate(new Date(data.dueOn))
     })
 
     if (!isError) {
@@ -38,18 +48,31 @@ const AddEditModal = ({ children }: { children: ReactNode }) => {
     }
     notification.error({ message: error.message })
   }
+
+  useEffect(() => {
+    if (!taskId || !data) return
+
+    form.setFields([
+      { name: "description", value: data.description },
+      { name: "taskCategory", value: data.taskCategory },
+      { name: "taskName", value: data.taskName },
+      { name: "taskStatus", value: data.taskStatus },
+      { name: "dueOn", value: data.dueOn ? dayjs(data.dueOn) : null }
+    ])
+  }, [show, data, taskId, form])
+
   return (
     <>
-      <span onClick={() => setShow(true)}>{children}</span>
       <Modal
         open={show}
         onCancel={onClose}
         width={800}
         footer={null}
+        loading={!!taskId && isFetching}
         centered
         title={
           <div className="text-2xl min-h-[3rem] border-b border-gray-300 mb-4">
-            Create Task
+            {taskId ? "Edit Task" : "Create Task"}
           </div>
         }
       >
@@ -112,7 +135,7 @@ const AddEditModal = ({ children }: { children: ReactNode }) => {
                 Cancel
               </Button>
               <Button type="primary" loading={isPending} htmlType="submit">
-                Create
+                {taskId ? "Update" : "Create"}
               </Button>
             </div>
           </div>
@@ -124,7 +147,12 @@ const AddEditModal = ({ children }: { children: ReactNode }) => {
 
 export default AddEditModal
 
-const status = [
+type TProps = {
+  taskId?: string
+  show: boolean
+  toggle: (value?: boolean) => void
+}
+export const status = [
   {
     label: "Todo",
     value: "TODO"
