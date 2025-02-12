@@ -17,7 +17,7 @@ const FilterBar = () => {
     <>
       <div
         id="filter-bar"
-        className="min-h-[5rem] flex justify-between items-start border-b border-gray-300 mb-[1rem]"
+        className="min-h-[5rem] flex justify-between items-center border-b border-gray-300 mb-[1rem]"
       >
         <div>
           <span className="text-gray-400">Filter by: </span>

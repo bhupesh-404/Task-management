@@ -3,7 +3,7 @@ import ProtectedRoute from "./ProtectedRoute"
 import RootRedirect from "./RootRedirect"
 
 import Login from "@pages/login"
-import Tasks from "@pages/tasks"
+import Tasks from "@pages/task-tabs"
 import NotFound from "@component/static/NotFound"
 import RootLayout from "@component/root-layout"
 

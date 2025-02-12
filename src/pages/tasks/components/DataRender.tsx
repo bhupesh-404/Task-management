@@ -2,8 +2,8 @@ import Wrapper from "./Wrapper"
 import ColSpanTwo from "./ColSpanTwo"
 import ColSpanOne from "./ColSpanOne"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { deleteTaskById, getTasksByStatus, updateTaskById } from "@api"
-import { Dropdown, Empty, MenuProps, notification, Spin } from "antd"
+import { getTasksByStatus, updateTaskById } from "@api"
+import { Empty, notification, Spin } from "antd"
 import dayjs from "dayjs"
 import { useEffect, useState } from "react"
 import { ReactSortable } from "react-sortablejs"
@@ -13,28 +13,21 @@ import CheckMark from "@assets/svg/checkmark.svg?react"
 import Checkbox from "antd/es/checkbox/Checkbox"
 import classNames from "classnames"
 import { Button, Select } from "@components"
-import AddEditModal, {
-  status
-} from "@component/filter-bar/add-task/AddEditModal"
-import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline"
-import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons"
+import { status } from "@component/filter-bar/add-task/AddEditModal"
+import { PlusOutlined } from "@ant-design/icons"
 import useFilter from "@store/filter"
-import { MenuInfo } from "rc-menu/lib/interface"
-import { useToggle } from "@hooks/useToggle"
 import useBatch, { updateBatch } from "@store/batch"
 import AddForm from "./AddForm"
+import MoreActions from "./MoreActions"
 
 const DataRender = (props: TProps) => {
   const { type, setCount } = props
-  const [open, toggle] = useToggle()
   const queryClient = useQueryClient()
 
   const taskCategory = useFilter(d => d.taskCategory)
   const search = useFilter(d => d.search)
   const dueOn = useFilter(d => d.dueOn)
   const sorting = useFilter(d => d.sorting)
-
-  const [taskId, setTaskId] = useState("")
 
   const batchIds = useBatch(d => d.taskIds)
 
@@ -43,12 +36,7 @@ const DataRender = (props: TProps) => {
     queryFn: () =>
       getTasksByStatus(type, { dueOn, search, taskCategory, sorting })
   })
-  const { mutateAsync, isPending, error } = useMutation({
-    mutationFn: deleteTaskById,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tasks"], exact: false })
-    }
-  })
+
   const { mutateAsync: updateStatusApi, isPending: isUpdating } = useMutation({
     mutationFn: ({ data, taskId }: { data: any; taskId: string }) =>
       updateTaskById(data, taskId),
@@ -67,37 +55,6 @@ const DataRender = (props: TProps) => {
     setTasks(newOrder)
   }
 
-  const items: MenuProps["items"] = [
-    {
-      key: "EDIT",
-      label: "Edit",
-      icon: <EditOutlined />
-    },
-    {
-      key: "DELETE",
-      label: "Delete",
-      danger: true,
-      icon: <DeleteOutlined />
-    }
-  ]
-
-  const handleEdit = async (e: MenuInfo, id: string) => {
-    if (e.key == "EDIT") {
-      toggle(true)
-      return setTaskId(id)
-    }
-    if (e.key == "DELETE") {
-      try {
-        await mutateAsync(id)
-        notification.success({ message: "Task deleted successfully" })
-      } catch (_) {
-        notification.error({
-          message: error?.message ?? "Error in deleting task"
-        })
-      }
-    }
-  }
-
   const updateStatus = async (id: string, value: string) => {
     try {
       await updateStatusApi({ data: { taskStatus: value }, taskId: id })
@@ -106,7 +63,7 @@ const DataRender = (props: TProps) => {
   }
 
   return (
-    <Spin spinning={isLoading || isPending || isUpdating}>
+    <Spin spinning={isLoading || isUpdating}>
       {type == "TODO" && (
         <div className="mb-[1rem]">
           <AddForm>
@@ -167,15 +124,7 @@ const DataRender = (props: TProps) => {
               </ColSpanOne>
               <ColSpanTwo>{item.taskCategory}</ColSpanTwo>
               <ColSpanOne className="justify-items-end">
-                <Dropdown
-                  menu={{
-                    items,
-                    onClick: e => handleEdit(e, item.id)
-                  }}
-                  placement="bottomRight"
-                >
-                  <EllipsisHorizontalIcon className="h-6 w-6 text-gray-500 cursor-pointer" />
-                </Dropdown>
+                <MoreActions taskId={item.id} />
               </ColSpanOne>
             </Wrapper>
           ))}
@@ -183,15 +132,13 @@ const DataRender = (props: TProps) => {
       ) : (
         <Empty />
       )}
-
-      <AddEditModal taskId={taskId} show={open} toggle={toggle} />
     </Spin>
   )
 }
 
 export default DataRender
 
-type TType = "TODO" | "IN-PROGRESS" | "COMPLETED"
+export type TType = "TODO" | "IN-PROGRESS" | "COMPLETED"
 type TProps = {
   type: TType
   setCount: React.Dispatch<React.SetStateAction<Record<TType, number>>>
