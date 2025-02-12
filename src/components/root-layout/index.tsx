@@ -13,7 +13,7 @@ const RootLayout = () => {
         </h2>
         <Profile />
       </Header>
-      <Content className="px-12 py-5">
+      <Content className="px-12 py-5 !min-h-[93vh]">
         <Outlet />
       </Content>
     </Layout>

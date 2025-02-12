@@ -26,7 +26,7 @@ const TaskBuddy = () => {
       <FilterBar />
       <Wrapper className="px-2">
         <ColSpanTwo>Task name</ColSpanTwo>
-        <ColSpanOne>
+        <ColSpanOne className="hidden lg:block">
           <span
             onClick={handleSorting}
             className="flex items-center !cursor-pointer gap-2"
@@ -39,9 +39,9 @@ const TaskBuddy = () => {
             )}
           </span>
         </ColSpanOne>
-        <ColSpanOne>Task Status</ColSpanOne>
-        <ColSpanTwo>Task Category</ColSpanTwo>
-        <ColSpanOne></ColSpanOne>
+        <ColSpanOne className="hidden lg:block">Task Status</ColSpanOne>
+        <ColSpanTwo className="hidden lg:block">Task Category</ColSpanTwo>
+        <ColSpanOne className="hidden lg:block"></ColSpanOne>
       </Wrapper>
       <div className="mb-4"></div>
       <Collapse

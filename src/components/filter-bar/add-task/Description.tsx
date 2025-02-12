@@ -31,7 +31,6 @@ const DescriptionInput: React.FC = () => {
         className="border-none mt-1 focus:ring-0"
       />
       <div className="flex justify-between items-center mt-2">
-        {/* Formatting Icons */}
         <div className="flex space-x-3 text-gray-700">
           <BoldOutlined
             onClick={() => handleFormat("b")}

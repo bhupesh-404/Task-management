@@ -20,7 +20,20 @@ const TaskTabs = () => {
     }
   ]
 
-  return <Tabs defaultActiveKey="1" size="large" id="task-tabs" items={items} />
+  return (
+    <>
+      <div className="lg:!hidden">
+        <TaskBuddy />
+      </div>
+      <Tabs
+        className="!hidden lg:!block"
+        defaultActiveKey="1"
+        size="large"
+        id="task-tabs"
+        items={items}
+      />
+    </>
+  )
 }
 
 export default TaskTabs

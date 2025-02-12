@@ -19,7 +19,7 @@ export const getTasksByStatus = async (
   status: string,
   options: TFilter
 ): Promise<TReturn[]> => {
-  if (!!options.search || !!options.dueOn?.length)
+  if (!!options.search || !!options.dueOn?.length || !!options.taskCategory)
     return search(status, options)
 
   const filters = [where("taskStatus", "==", status)]

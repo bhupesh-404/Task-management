@@ -14,7 +14,6 @@ const migrateDueOnFields = async () => {
 
   snapshot.forEach(async docSnap => {
     const data = docSnap.data()
-    // if (data.dueOnTimeStamp && typeof data.dueOn === "string") {
     const newDueOn = Timestamp.fromDate(new Date(data.dueOn))
 
     await updateDoc(doc(db, "tasks", docSnap.id), {
@@ -22,7 +21,6 @@ const migrateDueOnFields = async () => {
     })
 
     console.log(`Updated task ${docSnap.id} with Timestamp`)
-    // }
   })
 }
 

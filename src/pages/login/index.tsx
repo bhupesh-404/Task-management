@@ -6,6 +6,7 @@ import { Image } from "antd"
 import { Button } from "@components"
 import { useRequest } from "@hooks/useRequest"
 import { signInWithGoogle } from "@utils/index"
+import "./styles/style.css"
 
 const Login = () => {
   const [apiWrapper, loading] = useRequest()
@@ -13,8 +14,10 @@ const Login = () => {
     await apiWrapper(signInWithGoogle)
   }
   return (
-    <div className="bg-[#FFF9F9] min-h-screen">
-      <div className="grid grid-cols-2">
+    <div
+      className={`bg-[#FFF9F9] min-h-screen bg-[url('/mobile_bg_onboard.png')] bg-cover bg-center lg:bg-none`}
+    >
+      <div className="grid grid-cols-1 h-screen lg:min-h-max lg:grid-cols-2">
         <div className="grid self-center place-content-center gap-6">
           <h1 className="text-[#7B1984] text-3xl font-semibold flex gap-1.5">
             <Logo className="size-9" />
@@ -34,13 +37,13 @@ const Login = () => {
             <span className="text-xl">Continue with google</span>
           </Button>
         </div>
-        <div className="flex items-center justify-end min-h-screen">
+        <div className="hidden lg:flex items-center justify-end min-h-screen">
           <Image
             preview={false}
             src={herobg}
             alt="bg"
-            className="min-h-[100vh]"
-            rootClassName="!absolute !h-[100vh] !right-0 z-0 "
+            className="min-h-[100vh] opacity-60 lg:!max-w-[70%] lg:!ml-auto xl:!max-w-full xl:ml-0"
+            rootClassName="!absolute !h-[100vh]   !right-0 z-0 "
           />
           <Hero
             className="z-10 !max-w-[946px] !min-h-[662px]"

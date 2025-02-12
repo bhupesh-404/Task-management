@@ -65,7 +65,7 @@ const DataRender = (props: TProps) => {
   return (
     <Spin spinning={isLoading || isUpdating}>
       {type == "TODO" && (
-        <div className="mb-[1rem]">
+        <div className="mb-[1rem] hidden lg:block">
           <AddForm>
             <Button type="text" icon={<PlusOutlined />}>
               Add Item
@@ -99,7 +99,7 @@ const DataRender = (props: TProps) => {
                       "text-gray-400": type != "COMPLETED"
                     })}
                   />
-                  <span className=" drag-handle cursor-grab ">
+                  <span className=" drag-handle cursor-grab hidden lg:block">
                     <DragIcon className=" text-gray-500" />
                   </span>
                   <span
@@ -111,8 +111,10 @@ const DataRender = (props: TProps) => {
                   </span>
                 </div>
               </ColSpanTwo>
-              <ColSpanOne>{dayjs(item.dueOn).format("MM-DD-YYYY")}</ColSpanOne>
-              <ColSpanOne>
+              <ColSpanOne className="hidden lg:block">
+                {dayjs(item.dueOn).format("MM-DD-YYYY")}
+              </ColSpanOne>
+              <ColSpanOne className="hidden lg:block">
                 <Select
                   options={status}
                   value={item.taskStatus}
@@ -122,8 +124,10 @@ const DataRender = (props: TProps) => {
                   onChange={value => updateStatus(item.id, value)}
                 />
               </ColSpanOne>
-              <ColSpanTwo>{item.taskCategory}</ColSpanTwo>
-              <ColSpanOne className="justify-items-end">
+              <ColSpanTwo className="hidden lg:block">
+                {item.taskCategory}
+              </ColSpanTwo>
+              <ColSpanOne className="justify-items-end hidden lg:block">
                 <MoreActions taskId={item.id} />
               </ColSpanOne>
             </Wrapper>

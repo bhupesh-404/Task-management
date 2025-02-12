@@ -5,7 +5,7 @@ const BoardView = () => {
   return (
     <div>
       <FilterBar />
-      <div className="grid grid-cols-3 gap-[2rem] min-h-screen">
+      <div className="grid grid-cols-3 gap-[2rem] min-h-screen ">
         <Wrapper type="TODO" />
         <Wrapper type="IN-PROGRESS" />
         <Wrapper type="COMPLETED" />

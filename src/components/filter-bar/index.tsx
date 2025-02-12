@@ -17,29 +17,31 @@ const FilterBar = () => {
     <>
       <div
         id="filter-bar"
-        className="min-h-[5rem] flex justify-between items-center border-b border-gray-300 mb-[1rem]"
+        className="min-h-[5rem] flex flex-wrap  gap-4 py-4 justify-between items-center border-b border-gray-300 mb-[1rem]"
       >
         <div>
-          <span className="text-gray-400">Filter by: </span>
-          <Select
-            size="large"
-            placeholder="Category"
-            allowClear
-            className="!mx-5 min-w-[8rem]"
-            options={categoryOptions}
-            onChange={value => {
-              addFilter(value, "taskCategory")
-            }}
-          />
-          <DatePicker.RangePicker
-            size="large"
-            placeholder={["Due on From", "Due on To"]}
-            onChange={async (_, date) => {
-              addFilter(date, "dueOn")
-            }}
-          />
+          <div className="flex flex-[1] flex-wrap items-center lg:flex-none gap-4">
+            <span className="text-gray-400">Filter by: </span>
+            <Select
+              size="large"
+              placeholder="Category"
+              allowClear
+              className="!mx-5 lg:min-w-[8rem]"
+              options={categoryOptions}
+              onChange={value => {
+                addFilter(value, "taskCategory")
+              }}
+            />
+            <DatePicker.RangePicker
+              size="large"
+              placeholder={["Due on From", "Due on To"]}
+              onChange={async (_, date) => {
+                addFilter(date, "dueOn")
+              }}
+            />
+          </div>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center flex-[1] lg:flex-none gap-3">
           <Input
             className="!rounded-3xl"
             size="large"

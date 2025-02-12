@@ -43,10 +43,13 @@ const BatchPopup = () => {
   return (
     <div
       id="batch-popup"
-      className="max-w-[40rem] z-50 absolute bottom-[2rem] left-[40%] p-[1rem] bg-black text-white rounded-2xl"
+      className="w-full max-w-[36rem] md:max-w-[40rem] z-50 absolute bottom-[2rem] left-1/2 transform -translate-x-1/2 p-4 bg-black text-white rounded-2xl"
     >
-      <div className="grid grid-cols-3 gap-3 items-center]">
-        <div style={{ display: "ruby" }}>
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,auto))]  gap-3 items-center]">
+        <div
+          style={{ display: "ruby" }}
+          className="col-span-full lg:col-span-1"
+        >
           <Tag
             className="!p-2 !text-md"
             closable
@@ -59,7 +62,7 @@ const BatchPopup = () => {
           </Tag>
           <PopCheckMark className="!size-[2rem] text-white" />
         </div>
-        <div className="!relative">
+        <div className="!relative col-span-full lg:col-span-1">
           <Button
             size="large"
             block
@@ -84,7 +87,7 @@ const BatchPopup = () => {
             </div>
           )}
         </div>
-        <div>
+        <div className="col-span-full lg:col-span-1">
           <Button
             danger
             size="large"
