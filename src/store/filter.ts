@@ -1,18 +1,20 @@
 import { shallow } from "zustand/shallow"
-import storeCreationWrapper from "./helpers/storeCreationWrapper"
+import { storeWithoutPersistWrapper } from "./helpers/storeCreationWrapper"
 import { createWithEqualityFn as create } from "zustand/traditional"
 
 export interface TFilter {
   taskCategory?: string
   dueOn?: string[]
   search?: string
+  sorting: "asc" | "desc"
 }
 
-const defaultdata: TFilter = {}
+const defaultdata: TFilter = {
+  sorting: "asc"
+}
 
 const useFilter = create<TFilter>()(
-  storeCreationWrapper(() => ({ ...defaultdata }), {
-    persistName: "Filter",
+  storeWithoutPersistWrapper(() => ({ ...defaultdata }), {
     devtools: { name: "filter-info", store: "filter-store", enabled: true }
   }),
   shallow

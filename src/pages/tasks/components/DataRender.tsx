@@ -1,9 +1,9 @@
 import Wrapper from "./Wrapper"
 import ColSpanTwo from "./ColSpanTwo"
 import ColSpanOne from "./ColSpanOne"
-import { useQuery } from "@tanstack/react-query"
-import { getTasksByStatus } from "@api"
-import { Dropdown, Empty, MenuProps, Spin } from "antd"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { deleteTaskById, getTasksByStatus, updateTaskById } from "@api"
+import { Dropdown, Empty, MenuProps, notification, Spin } from "antd"
 import dayjs from "dayjs"
 import { useEffect, useState } from "react"
 import { ReactSortable } from "react-sortablejs"
@@ -12,30 +12,50 @@ import DragIcon from "@assets/svg/drag_icon.svg?react"
 import CheckMark from "@assets/svg/checkmark.svg?react"
 import Checkbox from "antd/es/checkbox/Checkbox"
 import classNames from "classnames"
-import { Select } from "@components"
+import { Button, Select } from "@components"
 import AddEditModal, {
   status
 } from "@component/filter-bar/add-task/AddEditModal"
 import { EllipsisHorizontalIcon } from "@heroicons/react/24/outline"
-import { DeleteOutlined, EditOutlined } from "@ant-design/icons"
+import { DeleteOutlined, EditOutlined, PlusOutlined } from "@ant-design/icons"
 import useFilter from "@store/filter"
 import { MenuInfo } from "rc-menu/lib/interface"
 import { useToggle } from "@hooks/useToggle"
+import useBatch, { updateBatch } from "@store/batch"
+import AddForm from "./AddForm"
 
 const DataRender = (props: TProps) => {
   const { type, setCount } = props
   const [open, toggle] = useToggle()
+  const queryClient = useQueryClient()
 
   const taskCategory = useFilter(d => d.taskCategory)
   const search = useFilter(d => d.search)
   const dueOn = useFilter(d => d.dueOn)
+  const sorting = useFilter(d => d.sorting)
+
   const [taskId, setTaskId] = useState("")
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["tasks", type, taskCategory, search, dueOn],
-    queryFn: () => getTasksByStatus(type, { dueOn, search, taskCategory })
-  })
+  const batchIds = useBatch(d => d.taskIds)
 
+  const { data, isLoading } = useQuery({
+    queryKey: ["tasks", type, , sorting, taskCategory, search, dueOn],
+    queryFn: () =>
+      getTasksByStatus(type, { dueOn, search, taskCategory, sorting })
+  })
+  const { mutateAsync, isPending, error } = useMutation({
+    mutationFn: deleteTaskById,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"], exact: false })
+    }
+  })
+  const { mutateAsync: updateStatusApi, isPending: isUpdating } = useMutation({
+    mutationFn: ({ data, taskId }: { data: any; taskId: string }) =>
+      updateTaskById(data, taskId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"], exact: false })
+    }
+  })
   const [tasks, setTasks] = useState<TReturn[]>([])
 
   useEffect(() => {
@@ -61,15 +81,41 @@ const DataRender = (props: TProps) => {
     }
   ]
 
-  const handleEdit = (e: MenuInfo, id: string) => {
-    console.log(e.key, id)
+  const handleEdit = async (e: MenuInfo, id: string) => {
     if (e.key == "EDIT") {
       toggle(true)
       return setTaskId(id)
     }
+    if (e.key == "DELETE") {
+      try {
+        await mutateAsync(id)
+        notification.success({ message: "Task deleted successfully" })
+      } catch (_) {
+        notification.error({
+          message: error?.message ?? "Error in deleting task"
+        })
+      }
+    }
   }
+
+  const updateStatus = async (id: string, value: string) => {
+    try {
+      await updateStatusApi({ data: { taskStatus: value }, taskId: id })
+      notification.success({ message: "Updated successfully" })
+    } catch (error) {}
+  }
+
   return (
-    <Spin spinning={isLoading}>
+    <Spin spinning={isLoading || isPending || isUpdating}>
+      {type == "TODO" && (
+        <div className="mb-[1rem]">
+          <AddForm>
+            <Button type="text" icon={<PlusOutlined />}>
+              Add Item
+            </Button>
+          </AddForm>
+        </div>
+      )}
       {!!tasks.length ? (
         <ReactSortable
           tag="div"
@@ -86,7 +132,10 @@ const DataRender = (props: TProps) => {
             >
               <ColSpanTwo>
                 <div className="items-center flex gap-2">
-                  <Checkbox />
+                  <Checkbox
+                    onChange={() => updateBatch(item.id)}
+                    checked={batchIds.includes(item.id)}
+                  />
                   <CheckMark
                     className={classNames({
                       "text-[#1B8D17]": type == "COMPLETED",
@@ -113,6 +162,7 @@ const DataRender = (props: TProps) => {
                   suffixIcon={null}
                   variant="filled"
                   className="min-w-[8rem]"
+                  onChange={value => updateStatus(item.id, value)}
                 />
               </ColSpanOne>
               <ColSpanTwo>{item.taskCategory}</ColSpanTwo>

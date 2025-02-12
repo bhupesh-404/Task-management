@@ -42,7 +42,11 @@ const AddEditModal = ({ taskId, show, toggle }: TProps) => {
     })
 
     if (!isError) {
-      notification.success({ message: "Created Successfully" })
+      notification.success({
+        message: taskId
+          ? "Task updated successfully"
+          : "Task created Successfully"
+      })
       onClose()
       return
     }
@@ -95,8 +99,6 @@ const AddEditModal = ({ taskId, show, toggle }: TProps) => {
               }}
               placeholder="Description"
             />
-            {/* <DescriptionInput /> */}
-            {/* <TipTapEditor /> */}
           </Form.Item>
           <div className="grid grid-cols-3 gap-2">
             <Form.Item

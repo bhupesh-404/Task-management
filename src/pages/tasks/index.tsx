@@ -6,6 +6,8 @@ import ColSpanOne from "./components/ColSpanOne"
 import ColSpanTwo from "./components/ColSpanTwo"
 import FilterBar from "@component/filter-bar"
 import { useState } from "react"
+import { DownOutlined, UpOutlined } from "@ant-design/icons"
+import useFilter, { addFilter } from "@store/filter"
 
 const TaskBuddy = () => {
   const [count, setCount] = useState({
@@ -13,12 +15,30 @@ const TaskBuddy = () => {
     "IN-PROGRESS": 0,
     COMPLETED: 0
   })
+  const sortOrder = useFilter(d => d.sorting)
+
+  const handleSorting = () => {
+    if (sortOrder == "asc") addFilter("desc", "sorting")
+    else addFilter("asc", "sorting")
+  }
   return (
     <div>
       <FilterBar />
       <Wrapper className="px-2">
         <ColSpanTwo>Task name</ColSpanTwo>
-        <ColSpanOne>Due on</ColSpanOne>
+        <ColSpanOne>
+          <span
+            onClick={handleSorting}
+            className="flex items-center !cursor-pointer gap-2"
+          >
+            Due on
+            {sortOrder === "asc" ? (
+              <UpOutlined className="text-gray-500 size-4" />
+            ) : (
+              <DownOutlined className="text-gray-500 size-4" />
+            )}
+          </span>
+        </ColSpanOne>
         <ColSpanOne>Task Status</ColSpanOne>
         <ColSpanTwo>Task Category</ColSpanTwo>
         <ColSpanOne></ColSpanOne>

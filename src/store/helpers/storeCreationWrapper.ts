@@ -28,3 +28,16 @@ type TOptions = {
   persistName: string
   devtools: DevtoolsOptions
 }
+
+type TWithoutPersistOptions = {
+  devtools: DevtoolsOptions
+}
+
+export const storeWithoutPersistWrapper = <T>(
+  store: StateCreator<T, [["zustand/devtools", never]], []>,
+  options: TWithoutPersistOptions
+) => {
+  const { devtools: devtoolsOptions } = options
+
+  return devtools(store, devtoolsOptions)
+}

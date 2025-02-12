@@ -6,7 +6,8 @@ import {
   query,
   where,
   getDocs,
-  getFirestore
+  getFirestore,
+  orderBy
 } from "firebase/firestore"
 
 // const formatDate = (date: string | Date) => {
@@ -18,13 +19,18 @@ export const getTasksByStatus = async (
   status: string,
   options: TFilter
 ): Promise<TReturn[]> => {
-  return search(status, options)
+  if (!!options.search || !!options.dueOn?.length)
+    return search(status, options)
 
   const filters = [where("taskStatus", "==", status)]
   if (options.taskCategory)
     filters.push(where("taskCategory", "==", options.taskCategory))
 
-  const q = query(collection(getFirestore(), "tasks"), ...filters)
+  const q = query(
+    collection(getFirestore(), "tasks"),
+    ...filters,
+    orderBy("dueOnTimeStamp", options.sorting)
+  )
   const querySnapshot = await getDocs(q)
 
   return querySnapshot.docs.map(doc => ({
