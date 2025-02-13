@@ -27,10 +27,10 @@ const AuditTrail = ({ taskId }: { taskId: string }) => {
             key={item.id}
             className="flex justify-between gap-3 items-center pb-[1.5rem]"
           >
-            <span className="text-md text-slate-700 text-wrap">
+            <span className="text-md text-slate-700 text-pretty">
               {item.message}
             </span>
-            <span className="text-slate-400 w-[8.5rem] text-right me-1.5">
+            <span className="text-slate-400 w-[8.5rem] text-nowrap text-right me-1.5">
               {formattedDate(item?.timestamp?.seconds)}
             </span>
           </div>

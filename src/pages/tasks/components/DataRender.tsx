@@ -29,8 +29,8 @@ const DataRender = (props: TProps) => {
   const dueOn = useFilter(d => d.dueOn)
   const sorting = useFilter(d => d.sorting)
 
-  const batchIds = useBatch(d => d.taskIds)
-
+  const batchIds = useBatch(d => d.taskIds) ?? []
+  const mappedBatch = new Map(batchIds.map(d => [d.id, d]))
   const { data, isLoading } = useQuery({
     queryKey: ["tasks", type, , sorting, taskCategory, search, dueOn],
     queryFn: () =>
@@ -98,8 +98,10 @@ const DataRender = (props: TProps) => {
               <ColSpanTwo>
                 <div className="items-center flex gap-2">
                   <Checkbox
-                    onChange={() => updateBatch(item.id)}
-                    checked={batchIds.includes(item.id)}
+                    onChange={() =>
+                      updateBatch({ id: item.id, status: item.taskStatus })
+                    }
+                    checked={mappedBatch.has(item.id)}
                   />
                   <CheckMark
                     className={classNames({

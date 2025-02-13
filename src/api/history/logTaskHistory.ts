@@ -13,7 +13,7 @@ export const logTaskHistory = async (
   extraData: any = {}
 ) => {
   const historyRef = collection(getFirestore(), "tasks", taskId, "taskHistory")
-  await addDoc(historyRef, {
+  return await addDoc(historyRef, {
     action,
     message,
     changedBy,

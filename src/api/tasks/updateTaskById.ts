@@ -15,13 +15,18 @@ export const updateTaskById = async (
       oldStatus,
       newStatus,
       isFileRemoved = false,
-      isFileUpdated = false
+      isFileUpdated = false,
+      type = "STATUS_UPDATE"
     } = additional
-    const taskData = {
-      ...data,
-      description: data.description ?? "",
-      attachment: file || null
-    }
+
+    const taskData =
+      type == "UPDATE_ALL"
+        ? {
+            ...data,
+            description: data.description ?? "",
+            attachment: file || null
+          }
+        : data
     const taskRef = doc(getFirestore(), "tasks", taskId)
     await updateDoc(taskRef, taskData)
 
@@ -36,7 +41,7 @@ export const updateTaskById = async (
     if (isFileRemoved || isFileUpdated) {
       await logTaskHistory(
         taskId,
-        isFileUpdated ? "Attachment updated" : "Attachment removed",
+        isFileRemoved ? "Attachment removed" : "Attachment updated",
         "AttachmentUpdated",
         useUserData.getState().email ?? "USER"
       )
@@ -54,4 +59,5 @@ type TAdditional = {
   newStatus: string
   isFileUpdated?: boolean
   isFileRemoved?: boolean
+  type?: "STATUS_UPDATE" | "UPDATE_ALL"
 }

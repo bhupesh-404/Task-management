@@ -43,7 +43,7 @@ const BatchPopup = () => {
   return (
     <div
       id="batch-popup"
-      className="w-full max-w-[36rem] md:max-w-[40rem] z-50 absolute bottom-[2rem] left-1/2 transform -translate-x-1/2 p-4 bg-black text-white rounded-2xl"
+      className="w-full max-w-[36rem] md:max-w-[40rem] z-50 fixed bottom-[2rem] left-1/2 transform -translate-x-1/2 p-4 bg-black text-white rounded-2xl"
     >
       <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,auto))]  gap-3 items-center]">
         <div

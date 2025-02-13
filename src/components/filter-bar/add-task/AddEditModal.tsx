@@ -38,7 +38,8 @@ const AddEditModal = ({ taskId, show, toggle }: TProps) => {
           isFileRemoved: data?.attachment ? !file : false,
           isFileUpdated: data?.attachment != file,
           newStatus: newdata?.taskStatus,
-          oldStatus: data?.taskStatus!
+          oldStatus: data?.taskStatus!,
+          type: "UPDATE_ALL"
         })
       }
 
@@ -46,6 +47,11 @@ const AddEditModal = ({ taskId, show, toggle }: TProps) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"], exact: false })
+      if (taskId)
+        queryClient.invalidateQueries({
+          queryKey: ["taskById", "taskhistory", taskId],
+          exact: false
+        })
     }
   })
   const onClose = () => {

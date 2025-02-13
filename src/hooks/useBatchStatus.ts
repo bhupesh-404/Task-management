@@ -1,4 +1,5 @@
 import { updateTaskStatusBatch } from "@api"
+import { TBatch } from "@store/batch"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import { TBatchOptions } from "src/api/tasks/updateStatusByBatch"
@@ -11,7 +12,7 @@ export const useBatchStatus = () => {
       taskIds,
       options
     }: {
-      taskIds: string[]
+      taskIds: TBatch["taskIds"]
       options: TBatchOptions
     }) => {
       if (options.type == "DELETE") setState("DELETING")
