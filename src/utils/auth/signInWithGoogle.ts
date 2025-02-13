@@ -2,6 +2,7 @@ import { GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth"
 import { auth, provider } from "@lib/firebaseConfig"
 import { notification } from "antd"
 import { TUser, updateUser, removeUser } from "@store/user"
+import { getDBUserData } from "@api"
 
 export const logOut = async () => {
   try {
@@ -25,7 +26,10 @@ export const signInWithGoogle = async () => {
     const token = credential?.accessToken
     const user = result.user as TUser
     localStorage.setItem("user", "true")
-    updateUser({ displayName: user.displayName })
+    const data = await getDBUserData()
+
+    updateUser({ displayName: data?.displayName ?? user.displayName })
+
     location.reload()
     return { token, user }
   } catch (error: any) {

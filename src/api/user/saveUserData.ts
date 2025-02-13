@@ -1,8 +1,9 @@
+import { getLoggedInEmail } from "@utils/index"
 import { doc, setDoc, getFirestore } from "firebase/firestore"
 
-export const saveUserData = async (email: string, displayName: string) => {
+export const saveUserData = async (displayName: string) => {
+  const email = getLoggedInEmail()
   if (!email) return
-
   try {
     await setDoc(
       doc(getFirestore(), "users", email),

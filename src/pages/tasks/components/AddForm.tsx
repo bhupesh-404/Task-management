@@ -16,7 +16,7 @@ const AddForm = ({ children }: { children: ReactNode }) => {
   const queryClient = useQueryClient()
   const [form] = useForm()
   const taskData = useWatch("tasks", form)
-  console.log({ taskData })
+
   const addTaskRef = useRef<(() => void) | null>(null)
 
   const { mutateAsync, isPending, isError, error } = useMutation({

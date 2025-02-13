@@ -2,7 +2,7 @@ import { syncFirestoreToAlgolia } from "@lib/firebaseConfig"
 import { TTask } from "@type/task.type"
 import { notification } from "antd"
 import { getFirestore, collection, addDoc } from "firebase/firestore"
-import { logTaskHistory } from "./logTaskHistory"
+import { logTaskHistory } from "../history/logTaskHistory"
 import useUserData from "@store/user"
 
 const db = getFirestore()
