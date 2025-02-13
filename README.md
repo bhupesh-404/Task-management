@@ -68,8 +68,8 @@ A simple and efficient task management application built with React.js and Fireb
 
 ## Deployment
 
-The application is deployed on **Vercel** and can be accessed at:
-[Live Demo](https://your-deployment-url.vercel.app)
+The application is deployed on **Netlify** and can be accessed at:
+[Live Demo](https://endearing-cascaron-bd51fe.netlify.app/login)
 
 ## Usage
 
