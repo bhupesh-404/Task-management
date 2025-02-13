@@ -1,50 +1,81 @@
-# React + TypeScript + Vite
+# Task Buddy
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple and efficient task management application built with React.js and Firebase. This project allows users to create, categorize, track tasks with due dates, statuses and task activity.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Add, update, and delete tasks
+- Batch updation and deletion
+- Categorize tasks by type
+- Track task completion status
+- Sort and filter tasks by due date and category
 
-## Expanding the ESLint configuration
+## Technologies Used
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **React** (Frontend UI library)
+- **Firebase Firestore** (Database)
+- **Algolia** (Searching)
+- **Tailwind CSS / CSS** (Styling)
+- **Ant Design** (UI library)
 
-- Configure the top-level `parserOptions` property like this:
+## Installation
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/bhupesh-404/Task-management.git
+   ```
+2. Navigate to project
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+3. Install dependencies using NPM:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+   ```sh
+   npm install
+   ```
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
+4. Setup .env file
+
+   - Add the following credentials to a `.env` file:
+
+     ```sh
+      VITE_PROJECT_ID
+      VITE_API_KEY
+      VITE_AUTH_DOMAIN
+      VITE_STORAGE_BUCKET
+      VITE_MESSAGING_SENDER_ID
+      VITE_APP_ID
+      VITE_MESAUREMENT_ID
+      VITE_CLIENT_SECRET
+      VITE_ALGOILI_APP_ID
+      VITE_ALGOLI_APP_KEY
+     ```
+
+5. Start the development server:
+   ```sh
+   npm run dev
+   ```
+
+## Challenges Faced & Solutions Implemented
+
+### 1. Working with Firebase
+
+**Challenge:** Firebase was new to me, so initially, it took some time to get familiar with it.
+**Solution:** With some Googling, reading the documentation, and browsing various resources, I was able to understand and integrate Firebase effectively into the project.
+
+### 2. Implementing Search Functionality
+
+**Challenge:** Firebase does not provide a built-in solution for full-text search.
+**Solution:** To overcome this, I used a third-party library called **Algolia**, which provides a powerful and efficient search functionality that integrates well with Firebase.
+
+## Deployment
+
+The application is deployed on **Vercel** and can be accessed at:
+[Live Demo](https://your-deployment-url.vercel.app)
+
+## Usage
+
+- Open `http://localhost:5173` in your browser.
+- Start creating tasks.
+
+## Author
+
+[Bhupesh Gnanasekar](https://github.com/bhupesh-404)
