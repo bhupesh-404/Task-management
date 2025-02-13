@@ -1,7 +1,7 @@
 import { updateTaskStatusBatch } from "@api"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
-import { TBatchOptions } from "src/api/updateStatusByBatch"
+import { TBatchOptions } from "src/api/tasks/updateStatusByBatch"
 
 export const useBatchStatus = () => {
   const queryClient = useQueryClient()

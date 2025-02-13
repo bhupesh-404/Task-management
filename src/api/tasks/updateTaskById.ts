@@ -1,7 +1,7 @@
 import { doc, updateDoc, getFirestore } from "firebase/firestore"
 import { notification } from "antd"
 import { syncFirestoreToAlgolia } from "@lib/firebaseConfig"
-import { logTaskHistory } from "./logTaskHistory"
+import { logTaskHistory } from "../history/logTaskHistory"
 import useUserData from "@store/user"
 
 export const updateTaskById = async (
