@@ -1,3 +1,14 @@
 #task-form .ant-radio-group .ant-radio-button-wrapper {
   border-radius: 2rem !important;
 }
+
+#customtabs.ant-radio-group .ant-radio-button-wrapper {
+  border-radius: 2rem !important;
+}
+#customtabs .ant-radio-button-wrapper-checked {
+  background-color: rgb(29, 29, 29) !important;
+  color: white !important;
+}
+#customtabs .ant-radio-button-wrapper::before {
+  all: unset !important;
+}

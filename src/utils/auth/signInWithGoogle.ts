@@ -25,7 +25,7 @@ export const signInWithGoogle = async () => {
     const token = credential?.accessToken
     const user = result.user as TUser
     localStorage.setItem("user", "true")
-    updateUser(user)
+    updateUser({ displayName: user.displayName })
     location.reload()
     return { token, user }
   } catch (error: any) {

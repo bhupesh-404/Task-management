@@ -41,7 +41,7 @@ const TaskBuddy = () => {
         </ColSpanOne>
         <ColSpanOne className="hidden lg:block">Task Status</ColSpanOne>
         <ColSpanTwo className="hidden lg:block">Task Category</ColSpanTwo>
-        <ColSpanOne className="hidden lg:block"></ColSpanOne>
+        <ColSpanOne></ColSpanOne>
       </Wrapper>
       <div className="mb-4"></div>
       <Collapse

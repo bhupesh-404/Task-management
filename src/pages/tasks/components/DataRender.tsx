@@ -38,8 +38,12 @@ const DataRender = (props: TProps) => {
   })
 
   const { mutateAsync: updateStatusApi, isPending: isUpdating } = useMutation({
-    mutationFn: ({ data, taskId }: { data: any; taskId: string }) =>
-      updateTaskById(data, taskId),
+    mutationFn: ({ data: newData, taskId, oldStatus }: TMutateParam) => {
+      return updateTaskById(newData, taskId, {
+        newStatus: newData.taskStatus,
+        oldStatus
+      })
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"], exact: false })
     }
@@ -55,9 +59,13 @@ const DataRender = (props: TProps) => {
     setTasks(newOrder)
   }
 
-  const updateStatus = async (id: string, value: string) => {
+  const updateStatus = async (id: string, value: string, oldStatus: string) => {
     try {
-      await updateStatusApi({ data: { taskStatus: value }, taskId: id })
+      await updateStatusApi({
+        data: { taskStatus: value },
+        taskId: id,
+        oldStatus
+      })
       notification.success({ message: "Updated successfully" })
     } catch (error) {}
   }
@@ -121,13 +129,15 @@ const DataRender = (props: TProps) => {
                   suffixIcon={null}
                   variant="filled"
                   className="min-w-[8rem]"
-                  onChange={value => updateStatus(item.id, value)}
+                  onChange={value =>
+                    updateStatus(item.id, value, item.taskStatus)
+                  }
                 />
               </ColSpanOne>
               <ColSpanTwo className="hidden lg:block">
                 {item.taskCategory}
               </ColSpanTwo>
-              <ColSpanOne className="justify-items-end hidden lg:block">
+              <ColSpanOne className="justify-items-end ">
                 <MoreActions taskId={item.id} />
               </ColSpanOne>
             </Wrapper>
@@ -147,3 +157,5 @@ type TProps = {
   type: TType
   setCount: React.Dispatch<React.SetStateAction<Record<TType, number>>>
 }
+
+type TMutateParam = { data: any; taskId: string; oldStatus: string }
