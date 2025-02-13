@@ -54,6 +54,11 @@ A simple and efficient task management application built with React.js and Fireb
    npm run dev
    ```
 
+## Usage
+
+- Open `http://localhost:5173` in your browser.
+- Start creating tasks.
+
 ## Challenges Faced & Solutions Implemented
 
 ### 1. Working with Firebase
@@ -68,13 +73,8 @@ A simple and efficient task management application built with React.js and Fireb
 
 ## Deployment
 
-The application is deployed on **Netlify** and can be accessed at:
-[Live Demo](https://endearing-cascaron-bd51fe.netlify.app/login)
-
-## Usage
-
-- Open `http://localhost:5173` in your browser.
-- Start creating tasks.
+The application is deployed on **Firebase** and can be accessed at:
+[Live Demo](https://task-management-d9148.web.app/login)
 
 ## Author
 
