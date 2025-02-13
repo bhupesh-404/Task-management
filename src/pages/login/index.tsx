@@ -6,7 +6,6 @@ import { Image } from "antd"
 import { Button } from "@components"
 import { useRequest } from "@hooks/useRequest"
 import { signInWithGoogle } from "@utils/index"
-import "./styles/style.css"
 
 const Login = () => {
   const [apiWrapper, loading] = useRequest()

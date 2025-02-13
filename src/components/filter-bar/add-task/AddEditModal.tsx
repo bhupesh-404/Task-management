@@ -7,24 +7,30 @@ import dayjs from "dayjs"
 import { useForm } from "antd/es/form/Form"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import "./style/index.css"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { TTask } from "@type/task.type"
+import { InboxOutlined } from "@ant-design/icons"
+import type { UploadFile, UploadProps } from "antd"
+import { message, Upload } from "antd"
+
+const { Dragger } = Upload
 
 const AddEditModal = ({ taskId, show, toggle }: TProps) => {
   const [form] = useForm<TTask>()
+  const [fileList, setFileList] = useState<UploadFile[]>([])
 
   const queryClient = useQueryClient()
   const { data, isPending: isFetching } = useQuery({
     queryFn: () => getTaskById(taskId),
-    queryKey: ["taskById", taskId],
+    queryKey: ["taskById", taskId, show],
     enabled: !!taskId
   })
 
-  const { mutateAsync, isPending, isError, error } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationFn: async (data: any) => {
-      if (taskId) return updateTaskById(data, taskId)
+      if (taskId) return updateTaskById(data, taskId, getAttachment(fileList))
 
-      return addTask(data)
+      return addTask(data, getAttachment(fileList))
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"], exact: false })
@@ -34,6 +40,7 @@ const AddEditModal = ({ taskId, show, toggle }: TProps) => {
     form.resetFields()
     toggle(false)
   }
+
   const onSubmit = async (data: any) => {
     await mutateAsync({
       ...data,
@@ -41,16 +48,34 @@ const AddEditModal = ({ taskId, show, toggle }: TProps) => {
       dueOnTimeStamp: Timestamp.fromDate(new Date(data.dueOn))
     })
 
-    if (!isError) {
-      notification.success({
-        message: taskId
-          ? "Task updated successfully"
-          : "Task created Successfully"
-      })
-      onClose()
-      return
+    notification.success({
+      message: taskId
+        ? "Task updated successfully"
+        : "Task created Successfully"
+    })
+    onClose()
+  }
+
+  const props: UploadProps = {
+    name: "file",
+    listType: "picture",
+    multiple: false,
+    accept: "image/*,",
+    beforeUpload: file => {
+      const isImage = file.type.startsWith("image/")
+      if (!isImage) {
+        message.error("You can only upload image files!")
+        return false
+      }
+
+      return false
+    },
+    maxCount: 1,
+    fileList,
+    onChange: ({ fileList }) => setFileList(fileList),
+    onDrop(e) {
+      console.log("Dropped files", e.dataTransfer.files)
     }
-    notification.error({ message: error.message })
   }
 
   useEffect(() => {
@@ -63,6 +88,18 @@ const AddEditModal = ({ taskId, show, toggle }: TProps) => {
       { name: "taskStatus", value: data.taskStatus },
       { name: "dueOn", value: data.dueOn ? dayjs(data.dueOn) : null }
     ])
+    if (data.attachment) {
+      setFileList([
+        {
+          uid: "-1",
+          name: "test2.png",
+          status: "done",
+          url: data.attachment
+        }
+      ])
+    } else {
+      setFileList([])
+    }
   }, [show, data, taskId, form])
 
   return (
@@ -131,15 +168,40 @@ const AddEditModal = ({ taskId, show, toggle }: TProps) => {
             </Form.Item>
           </div>
 
-          <div>
-            <div className="text-end">
-              <Button onClick={onClose} className="mr-3 mt-[4rem]">
-                Cancel
-              </Button>
-              <Button type="primary" loading={isPending} htmlType="submit">
-                {taskId ? "Update" : "Create"}
-              </Button>
-            </div>
+          {!!fileList.length && (
+            <Upload
+              fileList={fileList}
+              listType="picture-card"
+              onPreview={file => {
+                if ("size" in file) {
+                  openBase64InNewTab(file.thumbUrl!)
+                } else openBase64InNewTab(file.url!)
+              }}
+              onChange={file => {
+                setFileList(file.fileList)
+              }}
+            ></Upload>
+          )}
+          {!fileList.length && (
+            <Dragger {...props}>
+              <p className="ant-upload-drag-icon">
+                <InboxOutlined />
+              </p>
+              <p className="ant-upload-text">
+                Click or drag file to this area to upload
+              </p>
+              <p className="ant-upload-hint">
+                Support for a single or bulk upload. Strictly prohibited from
+                uploading company data or other banned files.
+              </p>
+            </Dragger>
+          )}
+
+          <div className="flex justify-end gap-3 mt-7">
+            <Button onClick={onClose}>Cancel</Button>
+            <Button type="primary" loading={isPending} htmlType="submit">
+              {taskId ? "Update" : "Create"}
+            </Button>
           </div>
         </Form>
       </Modal>
@@ -168,3 +230,21 @@ export const status = [
     label: "Completed"
   }
 ]
+
+const openBase64InNewTab = (base64String: string) => {
+  const newTab = window.open()
+  if (newTab) {
+    newTab.document.write(
+      `<img src="${base64String}" style="max-width: 100%;" />`
+    )
+  }
+}
+
+const getAttachment = (fileList: any[]) => {
+  const file = fileList[0]
+  if (!file) return null
+  if ("size" in file) {
+    return file.thumbUrl
+  }
+  return file.url
+}

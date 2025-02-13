@@ -7,7 +7,6 @@ export const getTaskById = async (taskId?: string) => {
     const docSnap = await getDoc(docRef)
 
     if (docSnap.exists()) {
-      console.log("Task Data:", docSnap.data())
       return docSnap.data() as TReturn
     } else {
       console.log("No such task!")
@@ -27,5 +26,6 @@ type TReturn = {
   dueOn: string // YYYY-MM-DD format
   taskStatus: "TODO" | "IN_PROGRESS" | "DONE" // You can expand statuses as needed
   taskName: string
+  attachment?: string
   taskCategory: "PROFESSIONAL" | "PERSONAL" | "OTHER" // Extend as per your categories
 }

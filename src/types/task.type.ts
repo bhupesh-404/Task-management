@@ -4,4 +4,5 @@ export type TTask = {
   taskStatus: string
   taskCategory: string
   description?: string
+  attachment?: any
 }
