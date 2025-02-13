@@ -59,12 +59,12 @@ A simple and efficient task management application built with React.js and Fireb
 ### 1. Working with Firebase
 
 **Challenge:** Firebase was new to me, so initially, it took some time to get familiar with it.
-**Solution:** With some Googling, reading the documentation, and browsing various resources, I was able to understand and integrate Firebase effectively into the project.
+**Solution:** With some Googling, reading the documentation, and browsing various resources, I was able to understand and integrate Firebase into the project.
 
 ### 2. Implementing Search Functionality
 
 **Challenge:** Firebase does not provide a built-in solution for full-text search.
-**Solution:** To overcome this, I used a third-party library called **Algolia**, which provides a powerful and efficient search functionality that integrates well with Firebase.
+**Solution:** To overcome this, I used a third-party library called **Algolia**, which provides a efficient search functionality that integrates well with Firebase.
 
 ## Deployment
 
