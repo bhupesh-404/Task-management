@@ -37,15 +37,20 @@ export const updateTaskById = async (
         "StatusUpdated",
         useUserData.getState().displayName ?? "USER"
       )
-    }
-    if (isFileRemoved || isFileUpdated) {
+    } else if (isFileRemoved || isFileUpdated) {
       await logTaskHistory(
         taskId,
         isFileRemoved ? "Attachment removed" : "Attachment updated",
         "AttachmentUpdated",
         useUserData.getState().email ?? "USER"
       )
-    }
+    } else
+      await logTaskHistory(
+        taskId,
+        "Updated this task",
+        "TaskUpdated",
+        useUserData.getState().email ?? "USER"
+      )
     await syncFirestoreToAlgolia()
   } catch (error: any) {
     if (error.name == "ApiError") return
