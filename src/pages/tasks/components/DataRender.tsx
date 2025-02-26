@@ -8,7 +8,7 @@ import dayjs from "dayjs"
 import { useEffect, useState } from "react"
 import { ReactSortable } from "react-sortablejs"
 import { TReturn } from "src/api/tasks/getTasksByStatus"
-import DragIcon from "@assets/svg/drag_icon.svg?react"
+// import DragIcon from "@assets/svg/drag_icon.svg?react"
 import CheckMark from "@assets/svg/checkmark.svg?react"
 import Checkbox from "antd/es/checkbox/Checkbox"
 import classNames from "classnames"
@@ -109,9 +109,9 @@ const DataRender = (props: TProps) => {
                       "text-gray-400": type != "COMPLETED"
                     })}
                   />
-                  <span className=" drag-handle cursor-grab hidden lg:block">
+                  {/* <span className=" drag-handle cursor-grab hidden lg:block">
                     <DragIcon className=" text-gray-500" />
-                  </span>
+                  </span> */}
                   <span
                     className={classNames({
                       "line-through": type == "COMPLETED"
