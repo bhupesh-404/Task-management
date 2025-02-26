@@ -184,9 +184,7 @@ const AddEditModal = ({ taskId, show, toggle }: TProps) => {
                   <Radio.Group buttonStyle="solid">
                     <Space>
                       <Radio.Button value="WORK">Work</Radio.Button>
-                      <Radio.Button value="PROFESSIONAL">
-                        Professional
-                      </Radio.Button>
+                      <Radio.Button value="PERSONAL">Personal</Radio.Button>
                     </Space>
                   </Radio.Group>
                 </Form.Item>

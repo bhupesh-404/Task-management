@@ -67,7 +67,7 @@ const categoryOptions = [
     value: "WORK"
   },
   {
-    label: "Professional",
-    value: "PROFESSIONAL"
+    label: "Personal",
+    value: "PERSONAL"
   }
 ]

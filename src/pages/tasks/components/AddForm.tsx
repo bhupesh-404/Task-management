@@ -180,7 +180,7 @@ const categoryOption = [
     value: "WORK"
   },
   {
-    label: "Professional",
-    value: "PROFESSIONAL"
+    label: "Personal",
+    value: "PERSONAL"
   }
 ]
